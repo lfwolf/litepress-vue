@@ -3,24 +3,26 @@
     <div class="cover">
       <img v-bind:src="info.cover" />
     </div>
-    <div class="layui-container">
-      <div class="brief" v-html="info.brief" />
-      <div class="layui-row tools">
-        <div class="layui-col-xs3"><i class="layui-icon layui-icon-star"></i><span>收藏</span></div>
-        <div class="layui-col-xs3"><i class="layui-icon layui-icon-download-circle"></i><span>下载</span></div>
-        <div class="layui-col-xs3"><i class="layui-icon layui-icon-share"></i><span>分享</span></div>
-        <div class="layui-col-xs3"><i class="layui-icon layui-icon-list"></i><span>多选</span></div>
-      </div>
-      <div class="layui-row list">
-        <div class="layui-col-xs12 listItem" v-for="(item,index) in list" :key="'list-'+item.id">
-          <router-link :to="'/article/'+item.id">
+    <van-cell-group>
+      <van-cell >
+        <template slot="title">
+          <span v-html="info.brief" />
+        </template>
+      </van-cell>
+      <van-grid clickable>
+        <van-grid-item icon="star-o" text="收藏" />
+        <van-grid-item icon="down" text="下载" />
+        <van-grid-item icon="share" text="分享" />
+        <van-grid-item icon="exchange" text="排序" v-on:click="resort" />
+      </van-grid>
+      <van-cell v-for="(item,index) in list" :key="'list-'+item.id" :to="'/article/'+item.id">
+        <template slot="title">
             <span class="seq">{{index+1}}</span>
             <img class="thumb" v-bind:src="item.cover_small" />
             <span>{{item.title}}</span>
-          </router-link>
-        </div>
-      </div>
-    </div>
+        </template>
+      </van-cell>
+    </van-cell-group>
   </div>
 </template>
 <script>
@@ -28,6 +30,9 @@
 import Vue from 'vue'
 import { Row, Col } from 'vant'
 import { getAlbum } from '@/api/main'
+import { Grid, GridItem, Cell, CellGroup } from 'vant';
+
+Vue.use(Grid).use(GridItem).use(Cell).use(CellGroup);
 
 Vue.use(Row).use(Col)
 
@@ -41,16 +46,18 @@ export default {
     }
   },
   created: function(){
-    
-    console.log(this.$route);
     let albumid = this.$route.params.id;
     getAlbum(albumid).then(res=>{
-      console.log(res.data.code)
       if( res.data.code == 1){
         this.info = res.data.info;
         this.list = res.data.list;
       }  
     });
+  },
+  methods:{
+    resort: function() {
+      this.list = this.list.reverse();
+    }
   }
 }
 </script>
@@ -79,6 +86,7 @@ export default {
 }
 .thumb {
   width: 50px;
-  border-radius:200px;
+  height:50px;
+  border-radius:100px;
 }
 </style>

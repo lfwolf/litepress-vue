@@ -1,26 +1,22 @@
 <template>
   <div> 
-    <div class="layui-container">
-      <div class="cover"><img v-bind:src="info.cover" /></div>
-      <div class="layui-row player">
-        <div class="layui-col-xs12">
-          <audio controls ref='audio'>
-            <source v-bind:src="info.url" type="audio/mpeg">
-          </audio>
-        </div>
-        <div></div>
-      </div>
-      <div class="layui-card">
-        <div class="layui-card-header title">{{info.title}}</div>
-        <div class="layui-card-body desc" v-html="info.brief">
-        </div>
-      </div>
-
+    <div class="cover"><img v-bind:src="info.cover" /></div>
+    <div class="player">
+      <audio controls ref='audio'>
+        <source v-bind:src="info.url" type="audio/mpeg">
+      </audio>
     </div>
+    <van-panel v-bind:title="info.title" >
+      <div v-html="info.brief"></div>
+    </van-panel>
   </div>
 </template>
 <script>
 import { getArticle } from '@/api/main'
+import Vue from 'vue';
+import { Panel } from 'vant';
+
+Vue.use(Panel);
 export default {
   data () {
     return {
@@ -60,6 +56,19 @@ export default {
   font-size: 12px;
   letter-spacing: 1px;
   line-height: 1.5;
+}
+.van-panel {
+  margin:0px 20px;
+}
+.van-panel__header {
+  font-size: 14px;
+  font-weight: 600;
+}
+.van-panel__content {
+  font-size: 12px;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  padding-left: 10px;
 }
 
 </style>

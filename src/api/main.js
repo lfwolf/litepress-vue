@@ -4,8 +4,11 @@ import service from '@/utils/request'
 const BannerUrl  = '/index/banner.json' // 首页数据接口
 const CatalogUrl = '/index/catalog.json' // 首页数据接口
 const RecommendUrl = '/index/recommends.json' // 首页数据接口
-const AlbumUrl = '/index/album.json'
-const ArticleUrl = '/index/article.json'
+const AlbumUrl   = '/album.json'
+const ArticleUrl = '/article.json'
+const CategoryUrl = '/catelog.json'
+const ArticleListUrl = '/articlelist.json'
+const ArticleContentUrl = '/articlecontent.json'
 
 export function getBanner () {
   return service({
@@ -42,6 +45,28 @@ export function getArticle (id) {
   console.log("getArticle:"+id)
   return service({
     url   : ArticleUrl,
+    method: 'get',
+    params: { id: id}
+  })
+}
+
+export function getCategory () {
+  return service({
+    url   : CategoryUrl,
+    method: 'get'
+  })
+}
+
+export function getArticleList () {
+  return service({
+    url   : ArticleListUrl,
+    method: 'get'
+  })
+}
+
+export function getArticleContent (id) {
+  return service({
+    url   : ArticleContentUrl,
     method: 'get',
     params: { id: id}
   })

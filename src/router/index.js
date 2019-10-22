@@ -1,32 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Tabbar from '@/components/Tabbar/index'
+import home from './home'
+import login from './login'
+import user from './user'
+import cat from './category'
+import article from './article'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      components: {
-        default: Home,
-        tarbar: Tabbar,
-        test: () => import('@/components/Home')
-      }
-    },
-    {
-      path: '/album/:id',
-      name: 'album',
-      components: {
-        default: () => import('@/components/Album')
-      }
-    },
-    {
-      path: '/article/:id',
-      name: 'article',
-      component: () => import('@/components/Article')
-    }
-  ]
+const RouterModel = new Router({
+  routes: [...home,...login,...user,...cat,...article]
 })
+
+export default RouterModel
