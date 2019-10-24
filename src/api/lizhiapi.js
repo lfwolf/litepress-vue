@@ -9,3 +9,10 @@ export function getAudioList (page) {
   })
 }
 
+export function getVoiceList (uid,page) {
+  return lizhiservice({
+    url   : uid + "/" + page,
+    method: 'get',
+    params: { uid: uid, page: page}
+  })
+}
