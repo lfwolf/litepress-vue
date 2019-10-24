@@ -6,4 +6,15 @@ const service = axios.create({
   timeout: 5000
 })
 
+const wpservice = axios.create({
+  baseURL: process.env.API_ROOT_WP,
+  timeout: 5000
+})
+
+const lizhiservice = axios.create({
+  baseURL: process.env.API_ROOT_LIZHI,
+  timeout: 5000
+})
+
 export default service
+export { wpservice, lizhiservice }

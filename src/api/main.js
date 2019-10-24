@@ -9,6 +9,7 @@ const ArticleUrl = '/article.json'
 const CategoryUrl = '/catelog.json'
 const ArticleListUrl = '/articlelist.json'
 const ArticleContentUrl = '/articlecontent.json'
+const AudioListUrl = '/audio/list.json'
 
 export function getBanner () {
   return service({
@@ -69,5 +70,14 @@ export function getArticleContent (id) {
     url   : ArticleContentUrl,
     method: 'get',
     params: { id: id}
+  })
+}
+
+const uid = "2540285708286522412"
+export function getAudioList (page) {
+  return service({
+    url   :  AudioListUrl, //uid + "/" + page,
+    method: 'get',
+    params: {page: page, uid: uid}
   })
 }

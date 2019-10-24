@@ -4,7 +4,9 @@
       <van-swipe-item v-for="item in banners" :key="'banner-'+item.id"><img v-bind:src="item.cover"></van-swipe-item>
     </van-swipe>
     <van-grid>
-      <van-grid-item v-bind:icon="item.cover" v-bind:text="item.title" v-for="item in catalogs" v-bind:key="'catalog-'+item.id"/>
+      <van-grid-item v-bind:icon="item.cover" v-bind:text="item.title" v-for="item in catalogs" 
+        to="/audio/list/"
+        v-bind:key="'catalog-'+item.id"/>
     </van-grid>
     <span class="head">更多推荐</span>
     <van-list
