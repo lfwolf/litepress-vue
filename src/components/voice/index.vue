@@ -1,5 +1,22 @@
 <template>
   <div>
+<van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+</van-pull-refresh>
+
+<van-cell-group title="">
+  <van-cell :title="bandinfo.name" value="内容" :label="bandinfo.intro">
+    <template slot="default">
+      <van-image :src="bandinfo.cover"  radius="20" width="8rem" 
+  height="8rem"
+  fit="contain" />
+    </template>
+  </van-cell>
+</van-cell-group>
+
+<van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
+  列表（{{bandinfo.voiceNum}}）
+</van-divider>
+
 <van-list
   v-model="loading"
   :finished="finished"
@@ -8,13 +25,12 @@
 >
       <van-cell is-link center
         v-for="(item,index) in list"  
-        :title="item.name" 
         :key="index" 
-        :to="{name:'audioContent',params:item}" >
+        :to="{name:'VoiceInfo',params:{id: item.id}}" >
         <template slot="title">
           <div>
           <img style="width:60px;vertical-align: middle;" :src="item.cover" />
-          <span class="truncate" v-html="item.name" />
+          <span class="truncate" >{{item.name | truncate(16,'...')}} </span>
           </div>
         </template>
       </van-cell>
@@ -22,64 +38,90 @@
   </div>
 </template>
 <script>
-import { getAudioList } from '@/api/main'
+import { getVoiceList } from '@/api/main'
 import Vue from 'vue';
 import { Image } from 'vant';
 import { Icon } from 'vant';
 import { List } from 'vant';
+import { Divider } from 'vant';
+import { PullRefresh } from 'vant';
 
+Vue.use(PullRefresh);
+
+Vue.use(Divider);
 Vue.use(List);
 Vue.use(Icon);
 Vue.use(Image);
-const name='audio.vue'
-// eg: http://cdnimg103.lizhi.fm/audio_cover/2019/10/22/2766973206213969927.jpg
 
 export default {
   data() {
     return {
+      sid: "",
       curpage: 1,
       size: 5,
       total: 0,
       list: [],
       loading: false,
       isLoading: false,
-      finished: false
+      finished: false,
+      bandinfo: {},
+      count: 0,
+      isLoading: false
     }
   },
   created: function(){
-    console.log(name +'created.')
+    
   },
   mounted: function(){
-    console.log(name +'mounted.')
-    
-
+    this.sid = this.$route.params.sid;
     
   },
-methods: {
-  onLoad(){
-    console.log("vant-cell onLoad")
-    getAudioList(this.curpage).then(res => {
-      this.loading = false;
-      res=res.data
-      //res.audios.forEach(function(element) {
-      //  element.url = 'http://cdnimg103.lizhi.fm/audio_cover/' + element.url
-      //})
-      this.list = this.list.concat(res.audios)
-      if(curpage == 1){
+  filters: {
+    truncate(text, length, clamp){
+      return text.slice(0, length) + (length < text.length ? clamp || '...' : '')
+    }
+  },
+  methods: {
+
+    
+    // 上拉刷新
+    onRefresh() {
+      this.isLoading = true
+      this.count++
+      console.log('刷新成功')
+      getVoiceList(this.sid,1).then(res => {
+        this.$toast('刷新成功');
+        this.isLoading = false;
+        this.list = res.data.audios
         this.total = res.total
         this.curpage = res.p
         this.size = res.size
-      }
-      if( this.size * this.curpage <  this.total){
-        this.curpage++
-      }else{
-        this.finished = true;
-      }
-    })
+        this.bandinfo = res.bandinfo;
+      })
+    },
+    onLoad(){
+      getVoiceList(this.sid,this.curpage).then(res => {
+        this.loading = false;
+        res=res.data
+        this.list = this.list.concat(res.audios)
+        if(this.curpage == 1){
+          this.total = res.total
+          this.curpage = res.p
+          this.size = res.size
+          this.bandinfo = res.bandinfo;
+          console.log(this.bandinfo)
+        }
+        if( this.total < 1){
+          this.finished = true;
+        }
+        else if( this.size * this.curpage <  this.total){
+          this.curpage++
+        }else{
+          this.finished = true;
+        }
+      })
+    }
   }
-}
-
-  
 }
 </script>
 <style scoped>

@@ -10,6 +10,8 @@ const CategoryUrl = '/catelog.json'
 const ArticleListUrl = '/articlelist.json'
 const ArticleContentUrl = '/articlecontent.json'
 const AudioListUrl = '/audio/list.json'
+const VoiceListUrl = '/voice/list.json'
+const VoiceInfoUrl = '/voice/info.json'
 
 export function getBanner () {
   return service({
@@ -73,11 +75,28 @@ export function getArticleContent (id) {
   })
 }
 
-const uid = "2540285708286522412"
-export function getAudioList (page) {
+export function getAudioList (sid,page) {
   return service({
     url   :  AudioListUrl, //uid + "/" + page,
     method: 'get',
-    params: {page: page, uid: uid}
+    params: {page: page, sid: sid}
+  })
+}
+
+export function getVoiceList (sid,page) {
+  console.log("getVoiceList: "+VoiceListUrl)
+  return service({
+    url   : VoiceListUrl ,
+    method: 'get',
+    params: { sid: sid, page: page}
+  })
+}
+
+export function getVoiceInfo (id) {
+  console.log("getVoiceList: "+VoiceListUrl)
+  return service({
+    url   : VoiceInfoUrl ,
+    method: 'get',
+    params: { id: id }
   })
 }

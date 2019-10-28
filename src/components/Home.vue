@@ -5,7 +5,7 @@
     </van-swipe>
     <van-grid>
       <van-grid-item v-bind:icon="item.cover" v-bind:text="item.title" v-for="item in catalogs" 
-        to="/voice/list/"
+        :to="item.url"
         v-bind:key="'catalog-'+item.id"/>
     </van-grid>
     <span class="head">更多推荐</span>
@@ -52,7 +52,12 @@ export default {
         'https://img.yzcdn.cn/vant/apple-2.jpg'
       ],
       banners: [],
-      catalogs:[],
+      catalogs:[
+        {"id":1,"cover":"https://cdn.qian.fm/upload/img/20180815/174515981.png","title":"古诗朗诵","url":"/voice/list/2667635973481609793"},
+        {"id":2,"cover":"https://cdn.qian.fm/upload/img/20180815/174526747.png","title":"学英语","url":"/voice/list/2692636203113692225"},
+        {"id":3,"cover":"https://cdn.qian.fm/upload/img/20180815/174535168.png","title":"卡通绘本","url":"/voice/list/2617728042945074241"},
+        {"id":4,"cover":"https://cdn.qian.fm/upload/img/20180815/174543481.png","title":"自编故事","url":"/voice/list/2617728042945074241"}
+      ],
       recommends:[],
       recommends2:[]
     };
@@ -64,6 +69,7 @@ export default {
         this.banners = res.data.data;
       }  
     });
+    /*
     getCatalog().then(res=>{
       console.log('getCatalog')
       if( res.data.code == 1){
@@ -71,6 +77,7 @@ export default {
         this.catalogs = res.data.data;
       }  
     });
+    */
 
   },
   mounted: function () {
