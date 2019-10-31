@@ -1,6 +1,7 @@
 import Home from '@/components/Home'
 import Tabbar from '@/components/Tabbar/index'
 
+
 export default [
     {
       path: '/',
@@ -21,5 +22,13 @@ export default [
       path: '/article/:id',
       name: 'article',
       component: () => import('@/components/Article'),
+    },
+    {
+      path: '/iframe',
+      name: 'iframe',
+      components: {
+        default:  () => import('@/components/iframe'),
+      }
     }
+
   ]

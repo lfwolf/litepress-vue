@@ -26,7 +26,8 @@
       <van-cell is-link center
         v-for="(item,index) in list"  
         :key="index" 
-        :to="{name:'VoiceInfo',params:{id: item.id}}" >
+        
+        @click="goContent(item.id,item.url) ">
         <template slot="title">
           <div>
           <img style="width:60px;vertical-align: middle;" :src="item.cover" />
@@ -82,7 +83,14 @@ export default {
     }
   },
   methods: {
-
+    //跳转到内容
+   goContent(id,src) {
+      if ( this.sid.startsWith("ieng")  ){
+        this.$router.replace({ name: 'iframe', params: { src: src }})
+      }else{
+        this.$router.replace({name:'VoiceInfo',params:{id: id}})
+      }
+    },
     
     // 上拉刷新
     onRefresh() {
